@@ -325,7 +325,7 @@ int real_main(int argc, char* argv[])
   success = options(argc, argv);
   if (!success) {
     PrintHelp();
-    exit(-1);
+    throw std::runtime_error("Invalid Command line options");
   }
 
   // *** SET UP JSBSIM *** //
@@ -363,9 +363,10 @@ int real_main(int argc, char* argv[])
     result = FDMExec->LoadScript(ScriptName, override_sim_rate_value, ResetName);
 
     if (!result) {
-      cerr << "Script file " << ScriptName << " was not successfully loaded" << endl;
+        std::stringstream error;
+        error << "Script file " << ScriptName << " was not successfully loaded" << endl;
       delete FDMExec;
-      exit(-1);
+      throw std::runtime_error(error.str());
     }
 
   // *** OPTION B: LOAD AN AIRCRAFT AND A SET OF INITIAL CONDITIONS *** //
@@ -377,9 +378,10 @@ int real_main(int argc, char* argv[])
                                "engine",
                                "systems",
                                AircraftName)) {
-      cerr << "  JSBSim could not be started" << endl << endl;
+        std::stringstream error;
+      cerr << "JSBSim could not be started" << endl << endl;
       delete FDMExec;
-      exit(-1);
+      throw std::runtime_error(error.str());
     }
 
     if (catalog) {
@@ -391,23 +393,26 @@ int real_main(int argc, char* argv[])
     JSBSim::FGInitialCondition *IC = FDMExec->GetIC();
     if ( ! IC->Load(ResetName)) {
       delete FDMExec;
+      std::stringstream error;
       cerr << "Initialization unsuccessful" << endl;
-      exit(-1);
+      throw std::runtime_error(error.str());
     }
 
   } else {
-    cout << "  No Aircraft, Script, or Reset information given" << endl << endl;
+      std::stringstream error;
+      error << "  No Aircraft, Script, or Reset information given" << endl << endl;
     delete FDMExec;
-    exit(-1);
+    throw std::runtime_error(error.str());
   }
 
   // Load output directives file[s], if given
   for (unsigned int i=0; i<LogDirectiveName.size(); i++) {
     if (!LogDirectiveName[i].empty()) {
       if (!FDMExec->SetOutputDirectives(LogDirectiveName[i])) {
-        cout << "Output directives not properly set in file " << LogDirectiveName[i] << endl;
+          std::stringstream error;
+          error << "Output directives not properly set in file " << LogDirectiveName[i] << endl;
         delete FDMExec;
-        exit(-1);
+        throw std::runtime_error(error.str());
       }
     }
   }
@@ -453,8 +458,7 @@ int real_main(int argc, char* argv[])
       trimmer->DoTrim();
       delete trimmer;
     } catch (string& msg) {
-      cerr << endl << msg << endl << endl;
-      exit(1);
+        throw std::runtime_error(msg);
     }
   }
   
@@ -550,9 +554,7 @@ quit:
 
 //%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-#define gripe cerr << "Option '" << keyword     \
-    << "' requires a value, as in '"    \
-    << keyword << "=something'" << endl << endl;/**/
+#define gripe throw std::runtime_error("Option '" + keyword + "' requires a value, as in '" + keyword + "=something'");
 
 bool options(int count, char **arg)
 {
@@ -561,7 +563,7 @@ bool options(int count, char **arg)
 
   if (count == 1) {
     PrintHelp();
-    exit(0);
+    throw;
   }
 
   cout.setf(ios_base::fixed);
@@ -579,10 +581,11 @@ bool options(int count, char **arg)
 
     if (keyword == "--help") {
       PrintHelp();
-      exit(0);
+      throw;
     } else if (keyword == "--version") {
-      cout << endl << "  JSBSim Version: " << FDMExec->GetVersion() << endl << endl;
-      exit (0);
+        std::stringstream error;
+      error << endl << "  JSBSim Version: " << FDMExec->GetVersion() << endl << endl;
+      throw(error.str());
     } else if (keyword == "--realtime") {
       realtime = true;
     } else if (keyword == "--nice") {
@@ -610,7 +613,6 @@ bool options(int count, char **arg)
         LogDirectiveName.push_back(value);
       } else {
         gripe;
-        exit(1);
       }
     } else if (keyword == "--root") {
       if (n != string::npos) {
@@ -620,28 +622,24 @@ bool options(int count, char **arg)
         }
       } else {
         gripe;
-        exit(1);
       }
     } else if (keyword == "--aircraft") {
       if (n != string::npos) {
         AircraftName = value;
       } else {
         gripe;
-        exit(1);
       }
     } else if (keyword == "--script") {
       if (n != string::npos) {
         ScriptName = value;
       } else {
         gripe;
-        exit(1);
       }
     } else if (keyword == "--initfile") {
       if (n != string::npos) {
         ResetName = value;
       } else {
         gripe;
-        exit(1);
       }
 
     } else if (keyword == "--property") {
@@ -653,7 +651,6 @@ bool options(int count, char **arg)
          CommandLinePropertyValues.push_back(propValue);
       } else {
         gripe;
-        exit(1);
       }
 
     } else if (keyword.substr(0,5) == "--end") {
@@ -666,7 +663,6 @@ bool options(int count, char **arg)
         }
       } else {
         gripe;
-        exit(1);
       }
 
     } else if (keyword == "--simulation-rate") {
@@ -680,7 +676,6 @@ bool options(int count, char **arg)
         }
       } else {
         gripe;
-        exit(1);
       }
 
     } else if (keyword == "--catalog") {
@@ -697,16 +692,18 @@ bool options(int count, char **arg)
       else if (xmlFile.IsInitFile(keyword)) ResetName = keyword;
       else if (xmlFile.IsInitFile("aircraft/" + AircraftName + "/" + keyword)) ResetName = keyword;
       else {
-        cerr << "The argument \"" << keyword << "\" cannot be interpreted as a file name or option." << endl;
-        exit(1);
+          std::stringstream error;
+        error << "The argument \"" << keyword << "\" cannot be interpreted as a file name or option." << endl;
+        throw std::runtime_error(error.str());
       }
 
     }
     else //Unknown keyword so print the help file, the bad keyword and abort
     {
           PrintHelp();
-          cerr << "The argument \"" << keyword << "\" cannot be interpreted as a file name or option." << endl;
-          exit(1);
+          std::stringstream error;
+          error << "The argument \"" << keyword << "\" cannot be interpreted as a file name or option." << endl;
+          throw std::runtime_error(error.str());
     }
 
   }

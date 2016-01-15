@@ -868,13 +868,15 @@ bool FGInitialCondition::Load(string rstfile, bool useStoredPath)
 
   // Make sure that the document is valid
   if (!document) {
-    cerr << "File: " << init_file_name << " could not be read." << endl;
-    exit(-1);
+      std::stringstream error;
+    error << "File: " << init_file_name << " could not be read." << endl;
+    throw std::runtime_error(error.str());
   }
 
   if (document->GetName() != string("initialize")) {
-    cerr << "File: " << init_file_name << " is not a reset file." << endl;
-    exit(-1);
+      std::stringstream error;
+    error << "File: " << init_file_name << " is not a reset file." << endl;
+    throw std::runtime_error(error.str());
   }
 
   double version = HUGE_VAL;
@@ -886,8 +888,9 @@ bool FGInitialCondition::Load(string rstfile, bool useStoredPath)
   if (version == HUGE_VAL) {
     result = Load_v1(document); // Default to the old version
   } else if (version >= 3.0) {
-    cerr << "Only initialization file formats 1 and 2 are currently supported" << endl;
-    exit (-1);
+      std::stringstream error;
+    error << "Only initialization file formats 1 and 2 are currently supported" << endl;
+    throw std::runtime_error(error.str());
   } else if (version >= 2.0) {
     result = Load_v2(document);
   } else if (version >= 1.0) {

@@ -153,8 +153,7 @@ FGFDMExec::FGFDMExec(FGPropertyManager* root, unsigned int* fdmctr) : Root(root)
   try {
     Allocate();
   } catch (const string& msg ) {
-    cout << "Caught error: " << msg << endl;
-    exit(1);
+    throw std::runtime_error("Caught error: " + msg);
   }
 
   trim_status = false;
@@ -1063,8 +1062,9 @@ bool FGFDMExec::ReadChild(Element* el)
   if (location) {
     child->Loc = location->FindElementTripletConvertTo("IN");
   } else {
-    cerr << endl << highint << fgred << "  No location was found for this child object!" << reset << endl;
-    exit(-1);
+    std::stringstream error;
+    error << endl << highint << fgred << "  No location was found for this child object!" << reset << endl;
+    throw std::runtime_error(error.str());
   }
 
   Element* orientation = el->FindElement("orient");

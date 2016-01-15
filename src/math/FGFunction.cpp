@@ -234,13 +234,14 @@ FGFunction::FGFunction(FGPropertyManager* propMan, Element* el, const string& pr
 
   element = el->GetElement();
   if (!element && Type != eRandom && Type != eUrandom && Type != ePi) {
-    cerr << fgred << highint << endl;
-    cerr << "  No element was specified as an argument to the \"" << operation << "\" operation" << endl;
-    cerr << "  This can happen when, for instance, a cos operation is specified and a " << endl;
-    cerr << "  property name is given explicitly, but is not placed within a" << endl;
-    cerr << "  <property></property> element tag pair." << endl;
-    cerr << reset;
-    exit(-2);
+      std::stringstream error;
+    error << fgred << highint << endl;
+    error << "  No element was specified as an argument to the \"" << operation << "\" operation" << endl;
+    error << "  This can happen when, for instance, a cos operation is specified and a " << endl;
+    error << "  property name is given explicitly, but is not placed within a" << endl;
+    error << "  <property></property> element tag pair." << endl;
+    error << reset;
+    throw std::runtime_error(error.str());
   }
   
   while (element) {

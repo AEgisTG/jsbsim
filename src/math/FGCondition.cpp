@@ -120,10 +120,11 @@ FGCondition::FGCondition(const string& test, FGPropertyManager* PropertyManager)
     conditional = test_strings[1];
     property2 = test_strings[2];
   } else {
-    cerr << endl << "  Conditional test is invalid: \"" << test
-         << "\" has " << test_strings.size() << " elements in the "
-         << "test condition." << endl;
-    exit(-1);
+      std::stringstream error;
+      cerr << endl << "  Conditional test is invalid: \"" << test
+          << "\" has " << std::to_string(test_strings.size()) << " elements in the "
+          << "test condition." << endl;
+    throw std::runtime_error(error.str());
   }
 
   FGPropertyNode *node = PropertyManager->GetNode(property1, false);

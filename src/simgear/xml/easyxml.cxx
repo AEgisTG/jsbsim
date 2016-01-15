@@ -17,6 +17,7 @@ INCLUDES
 #include "../compiler.h"
 
 #include <string.h>
+#include <sstream>
 
 #include "easyxml.hxx"
 #include <expat.h>
@@ -266,30 +267,31 @@ void readXML (istream &input, XMLVisitor &visitor, const string &path)
     if (!input.good()) {
       visitor.setParser(0);
       XML_ParserFree(parser);
-      cerr << "Problem reading input file " << path << endl;
-      exit(-1);
+      std::stringstream error;
+      error << "Problem reading input file " << path << endl;
+      throw std::runtime_error(error.str());
     }
 
     input.read(buf,16384);
     if (!XML_Parse(parser, buf, input.gcount(), false)) {
-      cerr << "In file " << path << ": line " << XML_GetCurrentLineNumber(parser) << endl
-           << "XML parse error: " << XML_ErrorString(XML_GetErrorCode(parser))
-           << endl;
+      std::stringstream error;
+      error << "In file " << path << ": line " << std::to_string(XML_GetCurrentLineNumber(parser)) << "\n"
+        << "XML parse error: " << XML_ErrorString(XML_GetErrorCode(parser)) << endl;
       visitor.setParser(0);
       XML_ParserFree(parser);
-      exit(-1);
+      throw std::runtime_error(error.str());
     }
 
   }
 
 // Verify end of document.
   if (!XML_Parse(parser, buf, 0, true)) {
-    cerr << "In file " << path << ": line " << XML_GetCurrentLineNumber(parser) << endl
-         << "XML parse error: " << XML_ErrorString(XML_GetErrorCode(parser))
-         << endl;
+    std::stringstream error;
+    error << "In file " << path << ": line " << std::to_string(XML_GetCurrentLineNumber(parser)) << "\n"
+      << "XML parse error: " << XML_ErrorString(XML_GetErrorCode(parser)) << endl;
     visitor.setParser(0);
     XML_ParserFree(parser);
-    exit(-1);
+    throw std::runtime_error(error.str());
   }
 
   visitor.setParser(0);

@@ -69,7 +69,11 @@ FGMagnetometer::FGMagnetometer(FGFCS* fcs, Element* element) : FGSensor(fcs, ele
   
   Element* location_element = element->FindElement("location");
   if (location_element) vLocation = location_element->FindElementTripletConvertTo("IN");
-  else {cerr << "No location given for magnetometer. " << endl; exit(-1);}
+  else {
+      std::stringstream error;
+      error << "No location given for magnetometer. " << endl; 
+      throw std::runtime_error(error.str());
+  }
 
   vRadius = MassBalance->StructuralToBody(vLocation);
 
