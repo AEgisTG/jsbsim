@@ -235,10 +235,10 @@ bool FGAerodynamics::Run(bool Holding)
       vForcesAtCG = vFnativeAtCG;
       break;
     default:
-        std::string error = "  A proper axis type has NOT been selected. Check "
-            "your aerodynamics definition.";
-      cerr << endl << error << endl;
-      throw std::runtime_error(error);
+        std::stringstream error;
+      cerr << endl <<  "  A proper axis type has NOT been selected. Check " <<
+          "your aerodynamics definition." << endl;
+      throw std::runtime_error(error.str());
   }
 
   // Calculate lift coefficient squared
@@ -400,10 +400,10 @@ void FGAerodynamics::DetermineAxisSystem(Element* document)
                      << " aircraft config file. (XYZ)" << endl;
       }
     } else if (axis != "ROLL" && axis != "PITCH" && axis != "YAW") { // error
-        std::string error = "  An unknown axis type, " + axis + " has been specified"
-            + " in the aircraft configuration file.";
-      cerr << endl << error << endl;
-      throw std::runtime_error(error);
+        std::stringstream error;
+        cerr << endl << "  An unknown axis type, " << axis << " has been specified"
+            << " in the aircraft configuration file." << endl;
+      throw std::runtime_error(error.str());
     }
     axis_element = document->FindNextElement("axis");
   }

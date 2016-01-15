@@ -63,9 +63,9 @@ FGFCSFunction::FGFCSFunction(FGFCS* fcs, Element* element) : FGFCSComponent(fcs,
   if (function_element)
     function = new FGFunction(PropertyManager, function_element);
   else {
-      std::string error = "FCS Function should contain a \"function\" element";
-    cerr << error << endl;
-    throw std::runtime_error(error);
+      std::stringstream error;
+      error << "FCS Function should contain a \"function\" element" << endl;
+    throw std::runtime_error(error.str());
   }
 
   FGFCSComponent::bind();

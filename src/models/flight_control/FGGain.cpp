@@ -123,8 +123,9 @@ FGGain::FGGain(FGFCS* fcs, Element* element) : FGFCSComponent(fcs, element)
     if (element->FindElement("table")) {
       Table = new FGTable(PropertyManager, element->FindElement("table"));
     } else {
-      cerr << "A table must be provided for the scheduled gain component" << endl;
-      exit(-1);
+        std::stringstream error;
+      error << "A table must be provided for the scheduled gain component" << endl;
+      throw std::runtime_error(error.str());
     }
   }
 

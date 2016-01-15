@@ -1063,12 +1063,9 @@ bool FGFDMExec::ReadChild(Element* el)
   if (location) {
     child->Loc = location->FindElementTripletConvertTo("IN");
   } else {
-      std::string error = highint;
-      error.append(fgred);
-      error.append("  No location was found for this child object!");
-      error.append(reset);
-    cerr << endl << error << endl;
-    throw std::runtime_error(error);
+    std::stringstream error;
+    error << endl << highint << fgred << "  No location was found for this child object!" << reset << endl;
+    throw std::runtime_error(error.str());
   }
 
   Element* orientation = el->FindElement("orient");
