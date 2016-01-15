@@ -198,7 +198,11 @@ FGLGear::FGLGear(Element* el, FGFDMExec* fdmex, int number, const struct Inputs&
 
   Element* element = el->FindElement("location");
   if (element) vXYZn = element->FindElementTripletConvertTo("IN");
-  else {cerr << "No location given for contact " << name << endl; exit(-1);}
+  else {
+      std::stringstream error;
+      error << "No location given for contact " << name << endl; 
+      throw std::runtime_error(error.str());
+  }
   SetTransformType(FGForce::tCustom);
 
   element = el->FindElement("orientation");

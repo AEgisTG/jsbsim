@@ -325,7 +325,7 @@ int real_main(int argc, char* argv[])
   success = options(argc, argv);
   if (!success) {
     PrintHelp();
-    exit(-1);
+    throw std::runtime_error("Invalid Command line options");
   }
 
   // *** SET UP JSBSIM *** //
@@ -363,9 +363,10 @@ int real_main(int argc, char* argv[])
     result = FDMExec->LoadScript(ScriptName, override_sim_rate_value, ResetName);
 
     if (!result) {
-      cerr << "Script file " << ScriptName << " was not successfully loaded" << endl;
+        std::string error = "Script file " + ScriptName + " was not successfully loaded";
+      cerr << error << endl;
       delete FDMExec;
-      exit(-1);
+      throw std::runtime_error(error);
     }
 
   // *** OPTION B: LOAD AN AIRCRAFT AND A SET OF INITIAL CONDITIONS *** //
@@ -377,9 +378,10 @@ int real_main(int argc, char* argv[])
                                "engine",
                                "systems",
                                AircraftName)) {
-      cerr << "  JSBSim could not be started" << endl << endl;
+        std::string error = "JSBSim could not be started";
+      cerr << error << endl << endl;
       delete FDMExec;
-      exit(-1);
+      throw std::runtime_error(error);
     }
 
     if (catalog) {
@@ -391,23 +393,26 @@ int real_main(int argc, char* argv[])
     JSBSim::FGInitialCondition *IC = FDMExec->GetIC();
     if ( ! IC->Load(ResetName)) {
       delete FDMExec;
-      cerr << "Initialization unsuccessful" << endl;
-      exit(-1);
+      std::string error = "Initialization unsuccessful";
+      cerr << error << endl;
+      throw std::runtime_error(error);
     }
 
   } else {
-    cout << "  No Aircraft, Script, or Reset information given" << endl << endl;
+      std::string error = "  No Aircraft, Script, or Reset information given";
+    cout << error << endl << endl;
     delete FDMExec;
-    exit(-1);
+    throw std::runtime_error(error);
   }
 
   // Load output directives file[s], if given
   for (unsigned int i=0; i<LogDirectiveName.size(); i++) {
     if (!LogDirectiveName[i].empty()) {
       if (!FDMExec->SetOutputDirectives(LogDirectiveName[i])) {
-        cout << "Output directives not properly set in file " << LogDirectiveName[i] << endl;
+          std::string error = "Output directives not properly set in file ";
+        cout << error << LogDirectiveName[i] << endl;
         delete FDMExec;
-        exit(-1);
+        throw std::runtime_error(error);
       }
     }
   }

@@ -273,18 +273,20 @@ double Element::GetAttributeValueAsNumber(const string& attr)
   string attribute = GetAttributeValue(attr);
 
   if (attribute.empty()) {
-    cerr << ReadFrom() << "Expecting numeric attribute value, but got no data"
+      std::stringstream error;
+    error << ReadFrom() << "Expecting numeric attribute value, but got no data"
          << endl;
-    exit(-1);
+    throw std::runtime_error(error.str());
   }
   else {
     double number=0;
     if (is_number(trim(attribute)))
       number = atof(attribute.c_str());
     else {
-      cerr << ReadFrom() << "Expecting numeric attribute value, but got: "
+        std::stringstream error;
+      error << ReadFrom() << "Expecting numeric attribute value, but got: "
            << attribute << endl;
-      exit(-1);
+      throw std::runtime_error(error.str());
     }
     
     return (number);
@@ -335,22 +337,25 @@ double Element::GetDataAsNumber(void)
     if (is_number(trim(data_lines[0])))
       number = atof(data_lines[0].c_str());
     else {
-      cerr << ReadFrom() << "Expected numeric value, but got: " << data_lines[0]
+        std::stringstream error;
+      error << ReadFrom() << "Expected numeric value, but got: " << data_lines[0]
            << endl;
-      exit(-1);
+      throw std::runtime_error(error.str());
     }
 
     return number;
   } else if (data_lines.size() == 0) {
-    cerr << ReadFrom() << "Expected numeric value, but got no data" << endl;
-    exit(-1);
+      std::stringstream error;
+    error << ReadFrom() << "Expected numeric value, but got no data" << endl;
+    std::runtime_error(error.str());
   } else {
-    cerr << ReadFrom() << "Attempting to get single data value in element "
+      std::stringstream error;
+    error << ReadFrom() << "Attempting to get single data value in element "
          << "<" << name << ">" << endl
          << " from multiple lines:" << endl;
     for(unsigned int i=0; i<data_lines.size(); ++i)
-      cerr << data_lines[i] << endl;
-    exit(-1);
+      error << data_lines[i] << endl;
+    throw std::runtime_error(error.str());
   }
 }
 
@@ -417,9 +422,10 @@ double Element::FindElementValueAsNumber(const string& el)
     value = DisperseValue(element, value);
     return value;
   } else {
-    cerr << ReadFrom() << "Attempting to get non-existent element " << el
+      std::stringstream error;
+    error << ReadFrom() << "Attempting to get non-existent element " << el
          << endl;
-    exit(-1);
+    throw std::runtime_error(error.str());
   }
 }
 
@@ -442,24 +448,27 @@ double Element::FindElementValueAsNumberConvertTo(const string& el, const string
   Element* element = FindElement(el);
 
   if (!element) {
-    cerr << ReadFrom() << "Attempting to get non-existent element " << el
+      std::stringstream error;
+    error << ReadFrom() << "Attempting to get non-existent element " << el
          << endl;
-    exit(-1);
+    throw std::runtime_error(error.str());
   }
 
   string supplied_units = element->GetAttributeValue("unit");
 
   if (!supplied_units.empty()) {
     if (convert.find(supplied_units) == convert.end()) {
-      cerr << element->ReadFrom() << "Supplied unit: \""
+        std::stringstream error;
+      error << element->ReadFrom() << "Supplied unit: \""
            << supplied_units << "\" does not exist (typo?)." << endl;
-      exit(-1);
+      throw std::runtime_error(error.str());
     }
     if (convert[supplied_units].find(target_units) == convert[supplied_units].end()) {
-      cerr << element->ReadFrom() << "Supplied unit: \""
+        std::stringstream error;
+      error << element->ReadFrom() << "Supplied unit: \""
            << supplied_units << "\" cannot be converted to " << target_units
            << endl;
-      exit(-1);
+      throw std::runtime_error(error.str());
     }
   }
 
@@ -503,21 +512,24 @@ double Element::FindElementValueAsNumberConvertFromTo( const string& el,
   Element* element = FindElement(el);
 
   if (!element) {
-    cerr << "Attempting to get non-existent element " << el << endl;
-    exit(-1);
+      std::stringstream error;
+    error << "Attempting to get non-existent element " << el << endl;
+    throw std::runtime_error(error.str());
   }
 
   if (!supplied_units.empty()) {
     if (convert.find(supplied_units) == convert.end()) {
-      cerr << element->ReadFrom() << "Supplied unit: \""
+        std::stringstream error;
+      error << element->ReadFrom() << "Supplied unit: \""
            << supplied_units << "\" does not exist (typo?)." << endl;
-      exit(-1);
+      throw std::runtime_error(error.str());
     }
     if (convert[supplied_units].find(target_units) == convert[supplied_units].end()) {
-      cerr << element->ReadFrom() << "Supplied unit: \""
+        std::stringstream error;
+      error << element->ReadFrom() << "Supplied unit: \""
            << supplied_units << "\" cannot be converted to " << target_units
            << endl;
-      exit(-1);
+      throw std::runtime_error(error.str());
     }
   }
 
@@ -542,15 +554,17 @@ FGColumnVector3 Element::FindElementTripletConvertTo( const string& target_units
 
   if (!supplied_units.empty()) {
     if (convert.find(supplied_units) == convert.end()) {
-      cerr << ReadFrom() << "Supplied unit: \""
+        std::stringstream error;
+      error << ReadFrom() << "Supplied unit: \""
            << supplied_units << "\" does not exist (typo?)." << endl;
-      exit(-1);
+      throw std::runtime_error(error.str());
     }
     if (convert[supplied_units].find(target_units) == convert[supplied_units].end()) {
-      cerr << ReadFrom() << "Supplied unit: \""
+        std::stringstream error;
+      error << ReadFrom() << "Supplied unit: \""
            << supplied_units << "\" cannot be converted to " << target_units
            << endl;
-      exit(-1);
+      throw std::runtime_error(error.str());
     }
   }
 
@@ -625,8 +639,9 @@ double Element::DisperseValue(Element *e, double val, const std::string& supplie
         value = (val + disp * urn)*(fabs(urn)/urn);
       }
     } else {
-      cerr << ReadFrom() << "Unknown dispersion type" << attType << endl;
-      exit(-1);
+        std::stringstream error;
+      error << ReadFrom() << "Unknown dispersion type" << attType << endl;
+      throw std::runtime_error(error.str());
     }
 
   }

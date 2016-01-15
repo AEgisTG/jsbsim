@@ -60,8 +60,9 @@ FGNozzle::FGNozzle(FGFDMExec* FDMExec, Element* nozzle_element, int num)
   if (nozzle_element->FindElement("area"))
     Area = nozzle_element->FindElementValueAsNumberConvertTo("area", "FT2");
   else {
-    cerr << "Fatal Error: Nozzle exit area must be given in nozzle config file." << endl;
-    exit(-1);
+      std::stringstream error;
+    error << "Fatal Error: Nozzle exit area must be given in nozzle config file." << endl;
+    throw std::runtime_error(error.str());
   }
 
   Thrust = 0;

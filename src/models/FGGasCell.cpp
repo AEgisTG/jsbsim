@@ -94,8 +94,9 @@ FGGasCell::FGGasCell(FGFDMExec* exec, Element* el, unsigned int num,
   if (element) {
     vXYZ = element->FindElementTripletConvertTo("IN");
   } else {
-    cerr << "Fatal Error: No location found for this gas cell." << endl;
-    exit(-1);
+      std::stringstream error;
+    error << "Fatal Error: No location found for this gas cell." << endl;
+    throw std::runtime_error(error.str());
   }
   if ((el->FindElement("x_radius") || el->FindElement("x_width")) &&
       (el->FindElement("y_radius") || el->FindElement("y_width")) &&
@@ -145,8 +146,9 @@ FGGasCell::FGGasCell(FGFDMExec* exec, Element* el, unsigned int num,
          Xwidth * Ywidth * Zwidth);
     }
   } else {
-    cerr << "Fatal Error: Gas cell shape must be given." << endl;
-    exit(-1);
+      std::stringstream error;
+    error << "Fatal Error: Gas cell shape must be given." << endl;
+    throw std::runtime_error(error.str());
   }
   if (el->FindElement("max_overpressure")) {
     MaxOverpressure = el->FindElementValueAsNumberConvertTo("max_overpressure",
@@ -530,8 +532,9 @@ FGBallonet::FGBallonet(FGFDMExec* exec, Element* el, unsigned int num,
   if (element) {
     vXYZ = element->FindElementTripletConvertTo("IN");
   } else {
-    cerr << "Fatal Error: No location found for this ballonet." << endl;
-    exit(-1);
+      std::stringstream error;
+    error << "Fatal Error: No location found for this ballonet." << endl;
+    throw std::runtime_error(error.str());
   }
   if ((el->FindElement("x_radius") || el->FindElement("x_width")) &&
       (el->FindElement("y_radius") || el->FindElement("y_width")) &&
@@ -581,8 +584,9 @@ FGBallonet::FGBallonet(FGFDMExec* exec, Element* el, unsigned int num,
          Xwidth * Ywidth * Zwidth);
     }
   } else {
-    cerr << "Fatal Error: Ballonet shape must be given." << endl;
-    exit(-1);
+      std::stringstream error;
+    error << "Fatal Error: Ballonet shape must be given." << endl;
+    throw std::runtime_error(error.str());
   }
   if (el->FindElement("max_overpressure")) {
     MaxOverpressure = el->FindElementValueAsNumberConvertTo("max_overpressure",

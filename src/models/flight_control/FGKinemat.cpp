@@ -79,9 +79,10 @@ FGKinemat::FGKinemat(FGFCS* fcs, Element* element) : FGFCSComponent(fcs, element
   NumDetents = Detents.size();
 
   if (NumDetents <= 1) {
-    cerr << "Kinematic component " << Name
+      std::stringstream error;
+    error << "Kinematic component " << Name
          << " must have more than 1 setting element" << endl;
-    exit(-1);
+    throw std::runtime_error(error.str());
   }
 
   FGFCSComponent::bind();

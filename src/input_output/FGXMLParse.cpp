@@ -99,9 +99,10 @@ void FGXMLParse::startElement (const char * name, const XMLAttributes &atts)
   }
 
   if (current_element == 0L) {
-    cerr << "In file " << getPath() << ": line " << getLine() << endl
+      std::stringstream error;
+    error << "In file " << getPath() << ": line " << getLine() << endl
          << "No current element read (running out of memory?)" << endl;
-    exit (-1);
+    throw std::runtime_error(error.str());
   }
 
   current_element->SetLineNumber(getLine());

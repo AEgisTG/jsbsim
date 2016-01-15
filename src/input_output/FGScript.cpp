@@ -586,11 +586,12 @@ void FGScript::Debug(int from)
           if (Events[i].SetValue[j] == 0.0 && Events[i].Functions[j] != 0L) {
             if (Events[i].SetParam[j] == 0) {
               if (Events[i].SetParamName[j].size() == 0) {
-              cerr << fgred << highint << endl
+                  std::stringstream error;
+              error << fgred << highint << endl
                    << "  An attempt has been made to access a non-existent property" << endl
                    << "  in this event. Please check the property names used, spelling, etc."
                    << reset << endl;
-              exit(-1);
+              throw std::runtime_error(error.str());
               } else {
                 cout << endl << "      set " << Events[i].SetParamName[j]
                      << " to function value (Late Bound)";
@@ -602,11 +603,12 @@ void FGScript::Debug(int from)
           } else {
             if (Events[i].SetParam[j] == 0) {
               if (Events[i].SetParamName[j].size() == 0) {
-              cerr << fgred << highint << endl
+                  std::stringstream error;
+              error << fgred << highint << endl
                    << "  An attempt has been made to access a non-existent property" << endl
                    << "  in this event. Please check the property names used, spelling, etc."
                    << reset << endl;
-              exit(-1);
+              throw std::runtime_error(error.str());
               } else {
                 cout << endl << "      set " << Events[i].SetParamName[j]
                      << " to function value (Late Bound)";

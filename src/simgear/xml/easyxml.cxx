@@ -266,30 +266,31 @@ void readXML (istream &input, XMLVisitor &visitor, const string &path)
     if (!input.good()) {
       visitor.setParser(0);
       XML_ParserFree(parser);
-      cerr << "Problem reading input file " << path << endl;
-      exit(-1);
+      std::string error = "Problem reading input file " + path;
+      cerr << error << endl;
+      throw std::runtime_error(error);
     }
 
     input.read(buf,16384);
     if (!XML_Parse(parser, buf, input.gcount(), false)) {
-      cerr << "In file " << path << ": line " << XML_GetCurrentLineNumber(parser) << endl
-           << "XML parse error: " << XML_ErrorString(XML_GetErrorCode(parser))
-           << endl;
+        std::string error = "In file " + path + ": line " + std::to_string(XML_GetCurrentLineNumber(parser)) + "\n"
+            + "XML parse error: " + XML_ErrorString(XML_GetErrorCode(parser));
+      cerr << error << endl;
       visitor.setParser(0);
       XML_ParserFree(parser);
-      exit(-1);
+      throw std::runtime_error(error);
     }
 
   }
 
 // Verify end of document.
   if (!XML_Parse(parser, buf, 0, true)) {
-    cerr << "In file " << path << ": line " << XML_GetCurrentLineNumber(parser) << endl
-         << "XML parse error: " << XML_ErrorString(XML_GetErrorCode(parser))
-         << endl;
+      std::string error = "In file " + path + ": line " + std::to_string(XML_GetCurrentLineNumber(parser)) + "\n"
+          + "XML parse error: " + XML_ErrorString(XML_GetErrorCode(parser));
+    cerr << error << endl;
     visitor.setParser(0);
     XML_ParserFree(parser);
-    exit(-1);
+    throw std::runtime_error(error);
   }
 
   visitor.setParser(0);

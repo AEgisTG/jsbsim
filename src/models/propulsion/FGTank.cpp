@@ -181,8 +181,9 @@ FGTank::FGTank(FGFDMExec* exec, Element* el, int tank_number)
     switch (grainType) {
       case gtCYLINDRICAL:
         if (Radius <= InnerRadius) {
-          cerr << "The bore diameter should be smaller than the total grain diameter!" << endl;
-          exit(-1);
+            std::stringstream error;
+          error << "The bore diameter should be smaller than the total grain diameter!" << endl;
+          throw std::runtime_error(error.str());
         }
         Volume = M_PI * Length * (Radius*Radius - InnerRadius*InnerRadius); // cubic inches
         break;
@@ -193,8 +194,9 @@ FGTank::FGTank(FGFDMExec* exec, Element* el, int tank_number)
         Volume = 1;  // Volume is irrelevant for the FUNCTION type, but it can't be zero!
         break;
       case gtUNKNOWN:
-        cerr << "Unknown grain type found in this rocket engine definition." << endl;
-        exit(-1);
+          std::stringstream error;
+        error << "Unknown grain type found in this rocket engine definition." << endl;
+        throw std::runtime_error(error.str());
     }
     Density = (Contents*lbtoslug)/Volume; // slugs/in^3
   }
@@ -360,8 +362,9 @@ void FGTank::CalculateInertias(void)
     } else if (Contents <= 0.0) {
       Volume = 0;
     } else {
-      cerr << endl << "  Solid propellant grain density is zero!" << endl << endl;
-      exit(-1);
+        std::stringstream error;
+      error << endl << "  Solid propellant grain density is zero!" << endl << endl;
+      throw std::runtime_error(error.str());
     }
 
     switch (grainType) {
@@ -384,8 +387,9 @@ void FGTank::CalculateInertias(void)
       Izz = function_izz->GetValue()*izz_unit;
       break;
     default:
-      cerr << "Unknown grain type found." << endl;
-      exit(-1);
+        std::stringstream error;
+      error << "Unknown grain type found." << endl;
+      throw std::runtime_error(error.str());
       break;
     }
 
