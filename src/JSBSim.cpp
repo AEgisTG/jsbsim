@@ -458,8 +458,7 @@ int real_main(int argc, char* argv[])
       trimmer->DoTrim();
       delete trimmer;
     } catch (string& msg) {
-      cerr << endl << msg << endl << endl;
-      exit(1);
+        throw std::runtime_error(msg);
     }
   }
   
@@ -564,7 +563,7 @@ bool options(int count, char **arg)
 
   if (count == 1) {
     PrintHelp();
-    exit(0);
+    throw;
   }
 
   cout.setf(ios_base::fixed);
@@ -582,10 +581,11 @@ bool options(int count, char **arg)
 
     if (keyword == "--help") {
       PrintHelp();
-      exit(0);
+      throw;
     } else if (keyword == "--version") {
-      cout << endl << "  JSBSim Version: " << FDMExec->GetVersion() << endl << endl;
-      exit (0);
+        std::stringstream error;
+      error << endl << "  JSBSim Version: " << FDMExec->GetVersion() << endl << endl;
+      throw(error.str());
     } else if (keyword == "--realtime") {
       realtime = true;
     } else if (keyword == "--nice") {

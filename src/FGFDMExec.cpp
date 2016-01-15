@@ -153,8 +153,7 @@ FGFDMExec::FGFDMExec(FGPropertyManager* root, unsigned int* fdmctr) : Root(root)
   try {
     Allocate();
   } catch (const string& msg ) {
-    cout << "Caught error: " << msg << endl;
-    throw std::runtime_error(msg);
+    throw std::runtime_error("Caught error: " + msg);
   }
 
   trim_status = false;
