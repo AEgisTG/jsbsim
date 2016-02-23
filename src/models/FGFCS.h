@@ -422,7 +422,7 @@ public:
   /** Sets the throttle command for the specified engine
       @param engine engine ID number
       @param cmd normalized throttle command (0.0 - 1.0)*/
-  void SetThrottleCmd(int engine, double cmd);
+  virtual void SetThrottleCmd(int engine, double cmd);
 
   /** Sets the mixture command for the specified engine
       @param engine engine ID number
@@ -515,15 +515,15 @@ public:
   //@{
   /** Sets the left brake group
       @param cmd brake setting in percent (0.0 - 1.0) */
-  void SetLBrake(double cmd) {BrakePos[FGLGear::bgLeft] = cmd;}
+  virtual void SetLBrake(double cmd) { BrakePos[FGLGear::bgLeft] = cmd; }
 
   /** Sets the right brake group
       @param cmd brake setting in percent (0.0 - 1.0) */
-  void SetRBrake(double cmd) {BrakePos[FGLGear::bgRight] = cmd;}
+  virtual void SetRBrake(double cmd) { BrakePos[FGLGear::bgRight] = cmd; }
 
   /** Sets the center brake group
       @param cmd brake setting in percent (0.0 - 1.0) */
-  void SetCBrake(double cmd) {BrakePos[FGLGear::bgCenter] = cmd;}
+  virtual void SetCBrake(double cmd) { BrakePos[FGLGear::bgCenter] = cmd; }
 
   /** Gets the brake for a specified group.
       @param bg which brakegroup to retrieve the command for

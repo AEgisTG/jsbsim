@@ -130,7 +130,7 @@ public:
   bool Load(Element* el);
 
   /// Retrieves the number of engines defined for the aircraft.
-  unsigned int GetNumEngines(void) const {return (unsigned int)Engines.size();}
+  virtual unsigned int GetNumEngines(void) const {return (unsigned int)Engines.size();}
 
   /** Retrieves an engine object pointer from the list of engines.
       @param index the engine index within the vector container
