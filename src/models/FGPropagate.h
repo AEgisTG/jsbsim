@@ -321,14 +321,14 @@ public:
       units ft
       @return The current altitude above sea level in feet.
   */
-  double GetAltitudeASL(void) const { return VState.vLocation.GetAltitudeASL(); }
+  virtual double GetAltitudeASL(void) const { return VState.vLocation.GetAltitudeASL(); }
 
   /** Returns the current altitude above sea level.
       This function returns the altitude above sea level.
       units meters
       @return The current altitude above sea level in meters.
   */
-  double GetAltitudeASLmeters(void) const { return GetAltitudeASL()*fttom;}
+  virtual double GetAltitudeASLmeters(void) const { return GetAltitudeASL()*fttom;}
 
   /** Retrieves a body frame angular velocity component relative to the ECEF frame.
       Retrieves a body frame angular velocity component. The angular velocity
@@ -434,8 +434,8 @@ public:
       if (VState.vLocation.GetRadius() == 0) return 1.0;
       else return VState.vLocation.GetRadius();
   }
-  double GetLongitude(void) const { return VState.vLocation.GetLongitude(); }
-  double GetLatitude(void) const { return VState.vLocation.GetLatitude(); }
+  virtual double GetLongitude(void) const { return VState.vLocation.GetLongitude(); }
+  virtual double GetLatitude(void) const { return VState.vLocation.GetLatitude(); }
 
   double GetGeodLatitudeRad(void) const { return VState.vLocation.GetGeodLatitudeRad(); }
   double GetGeodLatitudeDeg(void) const { return VState.vLocation.GetGeodLatitudeDeg(); }
@@ -535,13 +535,13 @@ public:
 
 // SET functions
 
-  void SetLongitude(double lon)
+  virtual void SetLongitude(double lon)
   {
     VState.vLocation.SetLongitude(lon);
     UpdateVehicleState();
   }
   void SetLongitudeDeg(double lon) { SetLongitude(lon*degtorad); }
-  void SetLatitude(double lat)
+  virtual void SetLatitude(double lat)
   {
     VState.vLocation.SetLatitude(lat);
     UpdateVehicleState();
@@ -554,12 +554,12 @@ public:
     VState.vInertialPosition = Tec2i * VState.vLocation;
   }
 
-  void SetAltitudeASL(double altASL)
+  virtual void SetAltitudeASL(double altASL)
   {
     VState.vLocation.SetAltitudeASL(altASL);
     UpdateVehicleState();
   }
-  void SetAltitudeASLmeters(double altASL) { SetAltitudeASL(altASL/fttom); }
+  virtual void SetAltitudeASLmeters(double altASL) { SetAltitudeASL(altASL / fttom); }
 
   void SetSeaLevelRadius(double tt);
   void SetTerrainElevation(double tt);

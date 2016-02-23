@@ -338,9 +338,9 @@ public:
   /// Returns the FGWinds pointer.
   FGWinds* GetWinds(void)    {return (FGWinds*)Models[eWinds];}
   /// Returns the FGFCS pointer.
-  FGFCS* GetFCS(void)                  {return (FGFCS*)Models[eSystems];}
+  virtual FGFCS* GetFCS(void)                  { return (FGFCS*)Models[eSystems]; }
   /// Returns the FGPropulsion pointer.
-  FGPropulsion* GetPropulsion(void)    {return (FGPropulsion*)Models[ePropulsion];}
+  virtual FGPropulsion* GetPropulsion(void)    { return (FGPropulsion*)Models[ePropulsion]; }
   /// Returns the FGAircraft pointer.
   FGMassBalance* GetMassBalance(void)  {return (FGMassBalance*)Models[eMassBalance];}
   /// Returns the FGAerodynamics pointer
@@ -356,7 +356,7 @@ public:
   /// Returns the FGAircraft pointer.
   FGAircraft* GetAircraft(void)        {return (FGAircraft*)Models[eAircraft];}
   /// Returns the FGPropagate pointer.
-  FGPropagate* GetPropagate(void)      {return (FGPropagate*)Models[ePropagate];}
+  virtual FGPropagate* GetPropagate(void)      {return (FGPropagate*)Models[ePropagate];}
   /// Returns the FGAuxiliary pointer.
   FGAuxiliary* GetAuxiliary(void)      {return (FGAuxiliary*)Models[eAuxiliary];}
   /// Returns the FGInput pointer.
@@ -389,13 +389,13 @@ public:
   /** Retrieves the value of a property.
       @param property the name of the property
       @result the value of the specified property */
-  inline double GetPropertyValue(const std::string& property)
+  virtual inline double GetPropertyValue(const std::string& property)
   { return instance->GetNode()->GetDouble(property); }
 
   /** Sets a property value.
       @param property the property to be set
       @param value the value to set the property to */
-  inline void SetPropertyValue(const std::string& property, double value) {
+  virtual inline void SetPropertyValue(const std::string& property, double value) {
     instance->GetNode()->SetDouble(property, value);
   }
 
