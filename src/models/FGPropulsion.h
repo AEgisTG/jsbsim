@@ -136,7 +136,7 @@ public:
       @param index the engine index within the vector container
       @return the address of the specific engine, or zero if no such engine is
               available */
-  FGEngine* GetEngine(unsigned int index) const {
+  virtual FGEngine* GetEngine(unsigned int index) const {
                       if (index < Engines.size()) return Engines[index];
                       else                        return 0L;      }
 
