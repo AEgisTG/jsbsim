@@ -427,7 +427,7 @@ public:
   const FGColumnVector3& GetTerrainAngularVelocity(void) const { return LocalTerrainAngularVelocity; }
   void RecomputeLocalTerrainVelocity();
 
-  double GetTerrainElevation(void) const { return GetLocalTerrainRadius() - VState.vLocation.GetSeaLevelRadius(); }
+  virtual double GetTerrainElevation(void) const { return GetLocalTerrainRadius() - VState.vLocation.GetSeaLevelRadius(); }
   double GetDistanceAGL(void)  const;
   double GetDistanceAGLKm(void)  const;
   double GetRadius(void) const {
@@ -562,7 +562,7 @@ public:
   virtual void SetAltitudeASLmeters(double altASL) { SetAltitudeASL(altASL / fttom); }
 
   void SetSeaLevelRadius(double tt);
-  void SetTerrainElevation(double tt);
+  virtual void SetTerrainElevation(double tt);
   void SetDistanceAGL(double tt);
   void SetDistanceAGLKm(double tt);
 

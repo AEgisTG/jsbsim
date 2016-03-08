@@ -161,7 +161,7 @@ public:
   double GetPilotAccel(int idx)  const { return vPilotAccel(idx);  }
   double GetNpilot(int idx)      const { return vPilotAccelN(idx); }
   double GetAeroPQR(int axis)    const { return vAeroPQR(axis);    }
-  double GetEulerRates(int axis) const { return vEulerRates(axis); }
+  virtual double GetEulerRates(int axis) const { return vEulerRates(axis); }
 
   const FGColumnVector3& GetPilotAccel (void) const { return vPilotAccel;  }
   const FGColumnVector3& GetNpilot     (void) const { return vPilotAccelN; }

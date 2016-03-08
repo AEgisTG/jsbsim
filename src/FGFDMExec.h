@@ -258,7 +258,7 @@ public:
   /** Initializes the sim from the initial condition object and executes
       each scheduled model without integrating i.e. dt=0.
       @return true if successful */
-  bool RunIC(void);
+  virtual bool RunIC(void);
 
   /** Sets the ground callback pointer. For optimal memory management, a shared
       pointer is used internally that maintains a reference counter. The calling
@@ -284,7 +284,7 @@ public:
       @param addModelToPath set to true to add the model name to the
       AircraftPath, defaults to true
       @return true if successful */
-  bool LoadModel(const std::string& AircraftPath, const std::string& EnginePath,
+    virtual bool LoadModel(const std::string& AircraftPath, const std::string& EnginePath,
                  const std::string& SystemsPath, const std::string& model,
                  bool addModelToPath = true);
 
@@ -358,7 +358,7 @@ public:
   /// Returns the FGPropagate pointer.
   virtual FGPropagate* GetPropagate(void)      {return (FGPropagate*)Models[ePropagate];}
   /// Returns the FGAuxiliary pointer.
-  FGAuxiliary* GetAuxiliary(void)      {return (FGAuxiliary*)Models[eAuxiliary];}
+  virtual FGAuxiliary* GetAuxiliary(void)      {return (FGAuxiliary*)Models[eAuxiliary];}
   /// Returns the FGInput pointer.
   FGInput* GetInput(void)              {return (FGInput*)Models[eInput];}
   /// Returns the FGOutput pointer.
@@ -372,7 +372,7 @@ public:
   /// Retrieves the script object
   FGScript* GetScript(void) {return Script;}
   /// Returns a pointer to the FGInitialCondition object
-  FGInitialCondition* GetIC(void)      {return IC;}
+  virtual FGInitialCondition* GetIC(void)      {return IC;}
   /// Returns a pointer to the FGTrim object
   FGTrim* GetTrim(void);
   ///@}
@@ -546,7 +546,7 @@ public:
 
   /** Sets the integration time step for the simulation executive.
       @param delta_t the time step in seconds.     */
-  void Setdt(double delta_t) { dT = delta_t; }
+  virtual void Setdt(double delta_t) { dT = delta_t; }
 
   /** Sets the root directory where JSBSim starts looking for its system directories.
       @param rootDir the string containing the root directory. */
