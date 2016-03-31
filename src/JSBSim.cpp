@@ -62,6 +62,7 @@ INCLUDES
 
 #include <iostream>
 #include <cstdlib>
+#include <stdexcept>
 
 using namespace std;
 using JSBSim::FGXMLFileRead;

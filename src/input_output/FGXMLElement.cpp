@@ -32,6 +32,7 @@ INCLUDES
 #include <cstdlib>
 #include <iostream>
 #include <sstream>
+#include <stdexcept>
 
 #include "FGXMLElement.h"
 #include "string_utilities.h"

@@ -68,6 +68,7 @@ INCLUDES
 #include <iostream>
 #include <iomanip>
 #include <fstream>
+#include <stdexcept>
 
 #include "initialization/FGInitialCondition.h"
 #include "FGPropagate.h"

@@ -38,6 +38,8 @@ INCLUDES
 
 #include <cstdlib>
 #include <iostream>
+#include <stdexcept>
+
 #include "FGTank.h"
 #include "FGFDMExec.h"
 #include "input_output/FGXMLElement.h"

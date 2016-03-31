@@ -41,6 +41,7 @@ INCLUDES
 #include <iostream>
 #include <iomanip>
 #include <cstdlib>
+#include <stdexcept>
 
 #include "FGMassBalance.h"
 #include "FGFDMExec.h"

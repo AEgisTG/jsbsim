@@ -44,6 +44,7 @@ INCLUDES
 #include <iostream>
 #include <cstdlib>
 #include <iomanip>
+#include <stdexcept>
 
 #include "FGScript.h"
 #include "FGFDMExec.h"

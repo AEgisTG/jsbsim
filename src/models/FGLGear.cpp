@@ -42,6 +42,7 @@ INCLUDES
 
 #include <cstdlib>
 #include <cstring>
+#include <stdexcept>
 
 #include "math/FGFunction.h"
 #include "FGLGear.h"

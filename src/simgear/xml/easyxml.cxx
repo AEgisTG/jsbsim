@@ -18,6 +18,8 @@ INCLUDES
 
 #include <string.h>
 #include <sstream>
+#include <string>
+#include <stdexcept>
 
 #include "easyxml.hxx"
 #include <expat.h>
@@ -30,6 +32,18 @@ using std::string;
 using std::cerr;
 using std::endl;
 using std::ifstream;
+
+
+// For compilers or code that doesn't yet compile the C++11 standard
+// std::to_string
+template <typename T>
+string ToString( T val )
+{
+  std::stringstream stream;
+  stream << val;
+  return stream.str();
+}
+
 
 ////////////////////////////////////////////////////////////////////////
 // Implementation of XMLAttributes.
@@ -275,7 +289,7 @@ void readXML (istream &input, XMLVisitor &visitor, const string &path)
     input.read(buf,16384);
     if (!XML_Parse(parser, buf, input.gcount(), false)) {
       std::stringstream error;
-      error << "In file " << path << ": line " << std::to_string(XML_GetCurrentLineNumber(parser)) << "\n"
+      error << "In file " << path << ": line " << ToString(XML_GetCurrentLineNumber(parser)) << "\n"
         << "XML parse error: " << XML_ErrorString(XML_GetErrorCode(parser)) << endl;
       visitor.setParser(0);
       XML_ParserFree(parser);
@@ -287,7 +301,7 @@ void readXML (istream &input, XMLVisitor &visitor, const string &path)
 // Verify end of document.
   if (!XML_Parse(parser, buf, 0, true)) {
     std::stringstream error;
-    error << "In file " << path << ": line " << std::to_string(XML_GetCurrentLineNumber(parser)) << "\n"
+    error << "In file " << path << ": line " << ToString(XML_GetCurrentLineNumber(parser)) << "\n"
       << "XML parse error: " << XML_ErrorString(XML_GetErrorCode(parser)) << endl;
     visitor.setParser(0);
     XML_ParserFree(parser);

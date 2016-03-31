@@ -39,6 +39,7 @@ INCLUDES
 
 #include <cstdlib>
 #include <iostream>
+#include <stdexcept>
 
 #include "FGFCSFunction.h"
 #include "input_output/FGXMLElement.h"

@@ -38,10 +38,23 @@ INCLUDES
 #include "FGPropertyValue.h"
 #include "input_output/FGXMLElement.h"
 #include "input_output/FGPropertyManager.h"
+
 #include <iostream>
 #include <cstdlib>
+#include <sstream>
+#include <stdexcept>
+#include <string>
 
 using namespace std;
+
+// For compilers or code that doesn't yet compile the C++11 standard
+template <typename T>
+string ToString( T val )
+{
+  stringstream stream;
+  stream << val;
+  return stream.str();
+}
 
 namespace JSBSim {
 
@@ -122,7 +135,7 @@ FGCondition::FGCondition(const string& test, FGPropertyManager* PropertyManager)
   } else {
       std::stringstream error;
       cerr << endl << "  Conditional test is invalid: \"" << test
-          << "\" has " << std::to_string(test_strings.size()) << " elements in the "
+          << "\" has " << ToString(test_strings.size()) << " elements in the "
           << "test condition." << endl;
     throw std::runtime_error(error.str());
   }
