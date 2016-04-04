@@ -46,6 +46,7 @@ INCLUDES
 #include <iterator>
 #include <cstdlib>
 #include <iomanip>
+#include <stdexcept>
 
 #include "FGFDMExec.h"
 #include "models/atmosphere/FGStandardAtmosphere.h"

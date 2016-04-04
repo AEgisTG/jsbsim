@@ -40,6 +40,7 @@ INCLUDES
 #include <ctime>
 #include <cstdlib>
 #include <iostream>
+#include <stdexcept>
 
 #include "FGMagnetometer.h"
 #include "simgear/magvar/coremag.hxx"

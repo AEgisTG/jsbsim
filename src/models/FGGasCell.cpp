@@ -41,6 +41,7 @@ INCLUDES
 #include "input_output/FGXMLElement.h"
 #include <iostream>
 #include <cstdlib>
+#include <stdexcept>
 
 using std::cerr;
 using std::endl;

@@ -40,6 +40,7 @@ INCLUDES
 #include <sstream>
 #include <iomanip>
 #include <cstdlib>
+#include <stdexcept>
 
 #include "FGFDMExec.h"
 #include "FGAerodynamics.h"

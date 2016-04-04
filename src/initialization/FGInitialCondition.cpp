@@ -45,6 +45,7 @@ INCLUDES
 *******************************************************************************/
 
 #include <cstdlib>
+#include <stdexcept>
 
 #include "FGInitialCondition.h"
 #include "FGFDMExec.h"

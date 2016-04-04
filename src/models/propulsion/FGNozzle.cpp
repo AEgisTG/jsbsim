@@ -38,6 +38,7 @@ INCLUDES
 #include <iostream>
 #include <sstream>
 #include <cstdlib>
+#include <stdexcept>
 
 #include "FGNozzle.h"
 #include "input_output/FGXMLElement.h"

@@ -32,6 +32,7 @@ INCLUDES
 #include <iomanip>
 #include <cstdlib>
 #include <cmath>
+#include <stdexcept>
 
 #include "FGFunction.h"
 #include "FGTable.h"

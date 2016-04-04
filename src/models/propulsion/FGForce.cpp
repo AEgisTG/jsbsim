@@ -42,6 +42,7 @@ and the cg.
 
 #include <iostream>
 #include <cstdlib>
+#include <stdexcept>
 
 #include "FGForce.h"
 #include "FGFDMExec.h"

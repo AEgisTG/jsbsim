@@ -39,6 +39,7 @@ INCLUDES
 
 #include <iostream>
 #include <cstdlib>
+#include <stdexcept>
 
 #include "FGAccelerometer.h"
 #include "models/FGPropagate.h"

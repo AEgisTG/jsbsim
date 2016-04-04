@@ -42,6 +42,7 @@ INCLUDES
 #include <iostream>
 #include <string>
 #include <cstdlib>
+#include <stdexcept>
 
 using namespace std;
 

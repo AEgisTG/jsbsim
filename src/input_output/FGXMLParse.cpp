@@ -32,6 +32,7 @@ INCLUDES
 #include <string>
 #include <iostream>
 #include <cstdlib>
+#include <stdexcept>
 
 #include "FGJSBBase.h"
 #include "FGXMLParse.h"
