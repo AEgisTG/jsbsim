@@ -141,59 +141,59 @@ public:
                       else                        return 0L;      }
 
   /// Retrieves the number of tanks defined for the aircraft.
-  unsigned int GetNumTanks(void) const {return (unsigned int)Tanks.size();}
+  virtual unsigned int GetNumTanks(void) const { return (unsigned int)Tanks.size(); }
 
   /** Retrieves a tank object pointer from the list of tanks.
       @param index the tank index within the vector container
       @return the address of the specific tank, or zero if no such tank is
               available */
-  FGTank* GetTank(unsigned int index) const {
+  virtual FGTank* GetTank(unsigned int index) const {
                       if (index < Tanks.size()) return Tanks[index];
                       else                      return 0L;        }
 
   /** Returns the number of fuel tanks currently actively supplying fuel */
-  int GetnumSelectedFuelTanks(void) const {return numSelectedFuelTanks;}
+  virtual int GetnumSelectedFuelTanks(void) const { return numSelectedFuelTanks; }
 
   /** Returns the number of oxidizer tanks currently actively supplying oxidizer */
-  int GetnumSelectedOxiTanks(void) const {return numSelectedOxiTanks;}
+  virtual int GetnumSelectedOxiTanks(void) const { return numSelectedOxiTanks; }
 
   /** Loops the engines until thrust output steady (used for trimming) */
-  bool GetSteadyState(void);
+  virtual bool GetSteadyState(void);
 
   /** Sets up the engines as running */
-  void InitRunning(int n);
+  virtual void InitRunning(int n);
 
-  std::string GetPropulsionStrings(const std::string& delimiter) const;
-  std::string GetPropulsionValues(const std::string& delimiter) const;
-  std::string GetPropulsionTankReport();
+  virtual std::string GetPropulsionStrings(const std::string& delimiter) const;
+  virtual std::string GetPropulsionValues(const std::string& delimiter) const;
+  virtual std::string GetPropulsionTankReport();
 
-  const FGColumnVector3& GetForces(void) const {return vForces; }
-  double GetForces(int n) const { return vForces(n);}
-  const FGColumnVector3& GetMoments(void) const {return vMoments;}
-  double GetMoments(int n) const {return vMoments(n);}
+  virtual const FGColumnVector3& GetForces(void) const { return vForces; }
+  virtual double GetForces(int n) const { return vForces(n); }
+  virtual const FGColumnVector3& GetMoments(void) const { return vMoments; }
+  virtual double GetMoments(int n) const { return vMoments(n); }
 
-  bool GetRefuel(void) const {return refuel;}
-  void SetRefuel(bool setting) {refuel = setting;}
-  bool GetFuelDump(void) const {return dump;}
-  void SetFuelDump(bool setting) {dump = setting;}
-  double Transfer(int source, int target, double amount);
-  void DoRefuel(double time_slice);
-  void DumpFuel(double time_slice);
+  virtual bool GetRefuel(void) const { return refuel; }
+  virtual void SetRefuel(bool setting) { refuel = setting; }
+  virtual bool GetFuelDump(void) const { return dump; }
+  virtual void SetFuelDump(bool setting) { dump = setting; }
+  virtual double Transfer(int source, int target, double amount);
+  virtual void DoRefuel(double time_slice);
+  virtual void DumpFuel(double time_slice);
 
-  const FGColumnVector3& GetTanksMoment(void);
-  double GetTanksWeight(void) const;
+  virtual const FGColumnVector3& GetTanksMoment(void);
+  virtual double GetTanksWeight(void) const;
 
-  std::string FindFullPathName(const std::string& filename) const;
-  inline int GetActiveEngine(void) const {return ActiveEngine;}
-  inline bool GetFuelFreeze(void) const {return FuelFreeze;}
-  double GetTotalFuelQuantity(void) const {return TotalFuelQuantity;}
+  virtual std::string FindFullPathName(const std::string& filename) const;
+  virtual inline int GetActiveEngine(void) const { return ActiveEngine; }
+  virtual inline bool GetFuelFreeze(void) const { return FuelFreeze; }
+  virtual double GetTotalFuelQuantity(void) const { return TotalFuelQuantity; }
 
-  void SetMagnetos(int setting);
-  void SetStarter(int setting);
-  void SetCutoff(int setting=0);
-  void SetActiveEngine(int engine);
-  void SetFuelFreeze(bool f);
-  const FGMatrix33& CalculateTankInertias(void);
+  virtual void SetMagnetos(int setting);
+  virtual void SetStarter(int setting);
+  virtual void SetCutoff(int setting = 0);
+  virtual void SetActiveEngine(int engine);
+  virtual void SetFuelFreeze(bool f);
+  virtual const FGMatrix33& CalculateTankInertias(void);
 
   struct FGEngine::Inputs in;
 
